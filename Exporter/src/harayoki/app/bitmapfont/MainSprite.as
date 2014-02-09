@@ -51,6 +51,8 @@ package harayoki.app.bitmapfont
 			_app  = NativeApplication.nativeApplication;
 			_nativeWindow = stage.nativeWindow;
 			
+			_nativeWindow.alwaysInFront = true;
+			
 			addChild(_panel);
 			_panel.btnClose.addEventListener(MouseEvent.CLICK,function(ev:MouseEvent):void{
 				_app.exit();
