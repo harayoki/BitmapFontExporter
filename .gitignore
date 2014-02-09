@@ -15,4 +15,5 @@ bin-release-temp/
 *.apk
 
 リカバリ_*
-
+.DS_Store
+Thumbs.db
