@@ -6,7 +6,7 @@ package
 	
 	import harayoki.app.bitmapfont.MainSprite;
 	
-	[SWF(width='640', height='410', backgroundColor='#111111', frameRate='30')] 
+	[SWF(width='640', height='480', backgroundColor='#111111', frameRate='30')] 
 	public class Exporter extends Sprite
 	{
 		

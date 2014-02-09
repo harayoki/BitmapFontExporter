@@ -15,11 +15,11 @@ package harayoki.app.data
 		public var height:int = 0;
 		public var x:int = 0;
 		public var y:int = 0;
-		public var offsetX:int = 0;
-		public var offsetY:int = 0;
-		public var advanceX:int = 0;
+		public var xoffset:int = 0;
+		public var yoffset:int = 0;
+		public var xadvance:int = 0;
 		public var page:int = 0;
-		public var chnl:int = 0;
+		public var chnl:int = 15;//ARGBの各ビットの意味ではないか？
 		public var bitmapData:BitmapData
 		
 		private var _source:MovieClip;
@@ -33,14 +33,13 @@ package harayoki.app.data
 		
 		public function toString():String
 		{
-			return "[LetterData:"+[id+"('"+String.fromCharCode(id)+"')",width,height,offsetX,offsetY,advanceX]+"]";
+			return "[LetterData:"+[id+"('"+String.fromCharCode(id)+"')",width,height,xoffset,yoffset,xadvance]+"]";
 		}
 		
 		public function applySourceClip(clip:MovieClip,frame:int):void
 		{
 			_source = clip;
 			_frame = frame;
-			trace(_frame);
 		}
 		
 		public function draw(scale:Number=1.0):void
@@ -49,7 +48,7 @@ package harayoki.app.data
 			var border:DisplayObject = _source.getChildByName(BORDER_CLIP_NAME);
 			width = border ? border.width *scale : _source.width *scale;
 			height = border ? border.height *scale : _source.height *scale;
-			advanceX = width;
+			xadvance = width;
 			if(border)
 			{
 				border.visible = false;
@@ -72,8 +71,8 @@ package harayoki.app.data
 			width = 0;
 			height = 0;
 			x = y = 0;
-			offsetX = offsetY = 0;
-			advanceX = 0;
+			xoffset = yoffset = 0;
+			xadvance = 0;
 			page = 0;
 			chnl = 0;
 			if(bitmapData)

@@ -33,4 +33,8 @@ http://noriki.cocolog-nifty.com/blog/2012/04/xcod.html
 
 Max rects
 http://wiki.unity3d.com/index.php?title=MaxRectsBinPack
+
+unicode 
+http://www.tamasoft.co.jp/ja/general-info/unicode.html
+
 */

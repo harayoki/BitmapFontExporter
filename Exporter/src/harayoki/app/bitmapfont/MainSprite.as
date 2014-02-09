@@ -15,9 +15,13 @@ package harayoki.app.bitmapfont
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
+	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
 	import harayoki.app.SimpleState;
+	import harayoki.app.bitmapfont.export.FntExporter;
+	import harayoki.app.bitmapfont.export.TextFntFileMaker;
+	import harayoki.app.bitmapfont.export.XmlFntFileMaker;
 	import harayoki.app.bitmapfont.pack.LetterPacker;
 	import harayoki.app.data.FontData;
 	import harayoki.app.data.LetterData;
@@ -62,9 +66,13 @@ package harayoki.app.bitmapfont
 			{
 				_nativeWindow.startMove();
 			});
-			_panel.btnPreview.addEventListener(MouseEvent.MOUSE_DOWN,function(ev:MouseEvent):void
+			_panel.btnPreview.addEventListener(MouseEvent.CLICK,function(ev:MouseEvent):void
 			{
 				_showPreview();
+			});
+			_panel.btnExport.addEventListener(MouseEvent.CLICK,function(ev:MouseEvent):void
+			{
+				_expottData();
 			});
 			
 			_panel.messages.mouseEnabled = false;
@@ -168,7 +176,7 @@ package harayoki.app.bitmapfont
 			function onLoadError(ev:ErrorEvent):void
 			{
 				cleanLoader();
-				_showErroreAndNextState(AppState.ERROR,"swf load error");
+				_showErrorAndNextState(AppState.WAIT_FILE,"swf load error");
 			};
 			function onLoadComplete(ev:Event):void
 			{
@@ -205,12 +213,12 @@ package harayoki.app.bitmapfont
 					}
 					else
 					{
-						_showErroreAndNextState(AppState.WAIT_FILE,_fontSwfParser.getErrorMessage());
+						_showErrorAndNextState(AppState.WAIT_FILE,_fontSwfParser.getErrorMessage());
 					}
 				});
 		}
 		
-		private function _showErroreAndNextState(nextState:int,errorMessage:String,wait:uint=5000):void
+		private function _showErrorAndNextState(nextState:int,errorMessage:String,wait:uint=5000):void
 		{
 			_panel.messages.errorInfo.text = errorMessage;
 			_state.value = AppState.ERROR;
@@ -293,6 +301,60 @@ package harayoki.app.bitmapfont
 				var letter:LetterData = fontData.letters[i];
 				_previewBg.graphics.drawRect(letter.x,letter.y,letter.width,letter.height);
 			}
+		}
+		
+		private function _expottData():void
+		{
+			
+			_state.value = AppState.EXPORT;
+			
+			_showPreview();
+			
+			setTimeout(__expottData,1);
+			
+		}
+		
+		private function __expottData():void
+		{
+			
+			var fontData:FontData = _fontSwfParser.getFontData();
+			var bmd:BitmapData = _preview.bitmapData;
+			fontData.face = _panel.uiFontName.text;
+			fontData.size = _panel.uiFontHeight.value * _panel.uiScale.value;
+			
+			fontData.lineHeight = fontData.size;
+			fontData.scaleW = _preview.bitmapData.width;
+			fontData.scaleH = _preview.bitmapData.height;
+			fontData.file = _panel.uiImageFileName.text;
+			
+			var exporter:FntExporter = new FntExporter();
+			if(_panel.uiFntFormat.text.toLowerCase() == "xml")
+			{
+				exporter.fntFileMaker = XmlFntFileMaker.getInstance();
+			}
+			else
+			{
+				exporter.fntFileMaker = TextFntFileMaker.getInstance();
+			}
+			
+			function onExportData():void
+			{
+				if(exporter.canceled)
+				{
+					_state.value = AppState.EDIT;
+				}
+				else if(exporter.successed)
+				{
+					_changeStateAndNextState(AppState.DONE,AppState.EDIT,3000);
+				}
+				else
+				{
+					_showErrorAndNextState(AppState.EDIT,exporter.errorMessage);
+				}
+			}
+			
+			exporter.onResult.addOnce(onExportData);
+			exporter.export(_panel.uiFntFileName.text,fontData,bmd);
 		}
 		
 		private function _debugDrawFontData(fontData:FontData):void

@@ -164,8 +164,8 @@ package harayoki.app.bitmapfont
 				letterData.id = charCode;
 				letterData.x = 0;
 				letterData.y = 0;
-				letterData.offsetX = 0;//TODO borderを消して計算できる
-				letterData.offsetY = 0;
+				letterData.xoffset = 0;//TODO borderを消して計算できる
+				letterData.yoffset = 0;
 				_fontData.letters.push(letterData);
 			}
 			return false;
