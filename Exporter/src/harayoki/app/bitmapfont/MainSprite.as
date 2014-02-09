@@ -1,6 +1,7 @@
 package harayoki.app.bitmapfont
 {
 	import flash.desktop.NativeApplication;
+	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.display.NativeWindow;
@@ -171,7 +172,7 @@ package harayoki.app.bitmapfont
 					if(_fontSwfParser.isValid)
 					{
 						_state.value = AppState.EDIT;
-						trace("fontData :",_fontSwfParser.getFontData());
+						//_debugDrawFontData(_fontSwfParser.getFontData());
 					}
 					else
 					{
@@ -207,6 +208,21 @@ package harayoki.app.bitmapfont
 			_panel.uiFntFileName.text = name+".fnt";
 			_panel.uiFontName.text = name;
 			_panel.uiImageFileName.text = name+".png";
+		}
+
+		private function _debugDrawFontData(fontData:FontData):void
+		{
+			trace("fontData :",fontData);
+			var xx:int = 0;
+			for(var i:int=0;i<fontData.letters.length;i++)
+			{
+				var letterData:LetterData = fontData.letters[i];
+				trace("letterData :",letterData);
+				var bmp:Bitmap = new Bitmap(letterData.bitmapData);
+				bmp.x = xx;
+				stage.addChild(bmp);
+				xx += bmp.width;
+			}
 		}
 	}
 }

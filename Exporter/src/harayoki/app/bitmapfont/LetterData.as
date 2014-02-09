@@ -11,12 +11,18 @@ package harayoki.app.bitmapfont
 		public var y:int = 0;
 		public var offsetX:int = 0;
 		public var offsetY:int = 0;
+		public var advanceX:int = 0;
 		public var page:int = 0;
 		public var chnl:int = 0;
 		public var bitmapData:BitmapData
 		
 		public function LetterData()
 		{
+		}
+		
+		public function toString():String
+		{
+			return "[LetterData:"+[id+"('"+String.fromCharCode(id)+"')",width,height,offsetX,offsetY,advanceX]+"]";
 		}
 		
 		public function reset():void
@@ -26,6 +32,7 @@ package harayoki.app.bitmapfont
 			height = 0;
 			x = y = 0;
 			offsetX = offsetY = 0;
+			advanceX = 0;
 			page = 0;
 			chnl = 0;
 			if(bitmapData)

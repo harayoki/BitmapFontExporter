@@ -1,7 +1,10 @@
 package harayoki.app.bitmapfont
 {
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
+	import flash.display.StageQuality;
 	import flash.events.Event;
 	
 	import org.osflash.signals.Signal;
@@ -99,7 +102,7 @@ package harayoki.app.bitmapfont
 				{
 					if(_targetClips.length>0)
 					{
-						_createLetterData(_targetClips.pop());
+						error = _createLetterData(_targetClips.pop());
 					}
 					else
 					{
@@ -146,18 +149,95 @@ package harayoki.app.bitmapfont
 		
 		private function _createLetterData(mc:MovieClip):Boolean
 		{
-			var error:Boolean = false;
-			var letterData:LetterData = new LetterData();
-			var border:DisplayObject = mc.getChildByName(BORDER_CLIP_NAME);
-			if(error)
+			var charCodes:Vector.<int> = new Vector.<int>();
+			_errorMessage = _getCharCodeList(mc,charCodes);
+			if(_errorMessage)
 			{
-				letterData.dispose();
+				return false;
 			}
-			else
+			
+			var i:int = 0;
+			for(i=0;i<charCodes.length;i++)
 			{
+				mc.gotoAndStop(i+1);
+				var border:DisplayObject = mc.getChildByName(BORDER_CLIP_NAME);
+				var charCode:int = charCodes[i];
+				var letterData:LetterData = new LetterData();
+				letterData.id = charCode;
+				letterData.x = 0;
+				letterData.y = 0;
+				letterData.offsetX = 0;//TODO borderを消して計算できる
+				letterData.offsetY = 0;
+				letterData.width = border ? border.width : mc.width;
+				letterData.height = border ? border.height : mc.height;
+				letterData.advanceX = letterData.width;
+				if(border)
+				{
+					border.visible = false;
+				}
+				var bmd:BitmapData = new BitmapData(letterData.width,letterData.height,true,0);
+				bmd.drawWithQuality(mc,null,null,null,null,true,StageQuality.BEST);
+				letterData.bitmapData = bmd;
 				_fontData.letters.push(letterData);
 			}
-			return error;
+			return false;
+		}
+		
+		private function _getCharCodeList(mc:MovieClip,fontIdList:Vector.<int>):String
+		{
+			fontIdList.length = 0;
+			var labels:Vector.<FrameLabel> = Vector.<FrameLabel>(mc.currentScene.labels);
+			if(labels.length==0)
+			{
+				return "labels not found ("+mc.name+")";
+			}
+			if(labels[0].frame!=1)
+			{
+				return "invalid labels ("+mc.name+")";
+			}
+			var arr:Array = new Array(mc.totalFrames);
+			var i:int = 0;
+			for(i=0;i<labels.length;i++)
+			{
+				var label:FrameLabel = labels[i];
+				var charCode:int = _labelName2CharCode(label.name);
+				if(charCode==-1)
+				{
+					return "invalid label name ("+mc.name+" "+label.name+")";
+				}
+				arr[label.frame-1] = charCode;
+			}
+			for(i=0;i<arr.length;i++)
+			{
+				if(arr[i]==null)
+				{
+					arr[i] = arr[i-1] + 1;
+				}
+				fontIdList.push(arr[i]);
+			}
+			trace("chars :",fontIdList);
+			
+			return null;
+		}
+		
+		private function _labelName2CharCode(name:String):int
+		{
+			name = name.toLowerCase();
+			var i:int = name.length;
+			while(i--)
+			{
+				var code:int = name.charCodeAt(i)
+					if(code != 120 && code <48 && code > 57)
+					{
+						//xでも数字でもない物があればはじく
+						return -1;
+					}
+			}
+			if(name.indexOf("0x")==0)
+			{
+				return parseInt(name,16);
+			}
+			return parseInt(name,10);
 		}
 		
 		private function _finishParseing():void

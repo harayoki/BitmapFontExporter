@@ -38,6 +38,11 @@ package harayoki.app.bitmapfont
 			letters = new Vector.<LetterData>();
 		}
 		
+		public function toString():String
+		{
+			return "[FontData:"+[id,face,lineHeight,"("+(letters ? letters.length : 0)+")"]+"]";
+		}
+		
 		public function dispose():void
 		{
 			for each(var letter:LetterData in letters)
