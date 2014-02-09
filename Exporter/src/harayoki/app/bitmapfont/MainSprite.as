@@ -23,7 +23,7 @@ package harayoki.app.bitmapfont
 		private var _state:SimpleState;
 		private var _ddd:DragAndDropDetector;
 		private var _swffile:File;
-		private var _fontSwfData:FontSwfData;
+		private var _fontSwfData:ParsedSwfData;
 		
 		public function MainSprite()
 		{
@@ -165,7 +165,7 @@ package harayoki.app.bitmapfont
 			{
 				_fontSwfData.dispose();
 			}
-			_fontSwfData = new FontSwfData();
+			_fontSwfData = new ParsedSwfData();
 			_fontSwfData.parse(swf);
 			_fontSwfData.onParseEnd.addOnce(
 				function():void{
