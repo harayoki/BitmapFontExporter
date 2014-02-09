@@ -23,7 +23,7 @@ package harayoki.app.bitmapfont
 		private var _state:SimpleState;
 		private var _ddd:DragAndDropDetector;
 		private var _swffile:File;
-		private var _fontSwfData:ParsedSwfData;
+		private var _fontSwfParser:FontSwfParser;
 		
 		public function MainSprite()
 		{
@@ -64,6 +64,8 @@ package harayoki.app.bitmapfont
 			
 			_ddd = new DragAndDropDetector(_panel.dropTaeget);
 			_ddd.onDrop.add(_onDropSwf);
+			
+			_fontSwfParser = new FontSwfParser();
 			
 			_state = new SimpleState();
 			_state.onUpdate.add(_update);
@@ -142,7 +144,7 @@ package harayoki.app.bitmapfont
 			function onLoadError(ev:ErrorEvent):void
 			{
 				cleanLoader();
-				_changeStateAndNextState(AppState.ERROR,AppState.WAIT_FILE);
+				_showErroreAndNextState(AppState.ERROR,"swf load error");
 			};
 			function onLoadComplete(ev:Event):void
 			{
@@ -161,27 +163,34 @@ package harayoki.app.bitmapfont
 		
 		private function _parseSwf(swf:MovieClip):void
 		{
-			if(_fontSwfData)
-			{
-				_fontSwfData.dispose();
-			}
-			_fontSwfData = new ParsedSwfData();
-			_fontSwfData.parse(swf);
-			_fontSwfData.onParseEnd.addOnce(
+			_fontSwfParser.reset()
+			_fontSwfParser.parse(swf);
+			_fontSwfParser.onParseEnd.addOnce(
 				function():void{
 					
-					if(_fontSwfData.isValid)
+					if(_fontSwfParser.isValid)
 					{
 						_state.value = AppState.EDIT;
+						trace("fontData :",_fontSwfParser.getFontData());
 					}
 					else
 					{
-						_changeStateAndNextState(AppState.ERROR,AppState.WAIT_FILE);
+						_showErroreAndNextState(AppState.WAIT_FILE,_fontSwfParser.getErrorMessage());
 					}
 				});
 		}
 		
-		private function _changeStateAndNextState(currentState:int,nextState:int,wait:uint=3000):void
+		private function _showErroreAndNextState(nextState:int,errorMessage:String,wait:uint=5000):void
+		{
+			_panel.messages.errorInfo.text = errorMessage;
+			_state.value = AppState.ERROR;
+			flash.utils.setTimeout(function():void{
+				_panel.messages.errorInfo.text = "";
+				_state.value = nextState;
+			},wait);
+		}
+		
+		private function _changeStateAndNextState(currentState:int,nextState:int,wait:uint=5000):void
 		{
 			_state.value = currentState;
 			flash.utils.setTimeout(function():void{
