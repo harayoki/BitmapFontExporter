@@ -13,6 +13,7 @@ package harayoki.app.bitmapfont
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.filesystem.File;
+	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
 	import flash.utils.setTimeout;
 	
@@ -82,6 +83,7 @@ package harayoki.app.bitmapfont
 			_preview = new Bitmap();
 			_panel.preview.addChild(_previewBg);
 			_panel.preview.addChild(_preview);
+			_panel.preview.scrollRect = new Rectangle(0,0,_panel.preview.width,_panel.preview.height);
 			
 			_state = new SimpleState();
 			_state.onUpdate.add(_update);
@@ -135,6 +137,7 @@ package harayoki.app.bitmapfont
 			_panel.uiFntFileName.enabled = enabled;
 			_panel.uiFntFormat.enabled = enabled;
 			_panel.uiFontHeight.enabled = enabled;
+			_panel.uiScale.enabled = enabled;
 			_panel.uiFontName.enabled = enabled;
 			_panel.uiImageFileName.enabled = enabled;
 			_panel.uiImageHeight.enabled = enabled;
@@ -257,16 +260,18 @@ package harayoki.app.bitmapfont
 			}
 			var w:int = parseInt(_panel.uiImageWidth.selectedLabel,10)
 			var h:int = parseInt(_panel.uiImageHeight.selectedLabel,10);
+			var scale:Number = _panel.uiScale.value;
+			
 			_letterPacker.imageWidth = w;;
 			_letterPacker.imageHeight = h;
 			var fontData:FontData = _fontSwfParser.getFontData();
-			fontData.lineHeight = _panel.uiFontHeight.value;
-			var bmd:BitmapData = _letterPacker.execute(fontData);
+			fontData.lineHeight = _panel.uiFontHeight.value * scale;
+			var bmd:BitmapData = _letterPacker.execute(fontData,scale);
 			_preview.bitmapData = bmd;
-			var scale:Number = Math.min(256/w,256/h);
-			scale = Math.min(scale,1.0);
-			_preview.scaleX = _preview.scaleY = scale;
-			_previewBg.scaleX = _previewBg.scaleY = scale;
+			var preViewScale:Number = Math.min(256/w,256/h);
+			preViewScale = Math.min(preViewScale,1.0);
+			_preview.scaleX = _preview.scaleY = preViewScale;
+			_previewBg.scaleX = _previewBg.scaleY = preViewScale;
 			
 			_previewBg.graphics.clear();
 			_previewBg.graphics.lineStyle(0,0,0.5);

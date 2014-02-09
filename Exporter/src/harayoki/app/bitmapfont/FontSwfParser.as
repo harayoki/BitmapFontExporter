@@ -1,20 +1,16 @@
 package harayoki.app.bitmapfont
 {
-	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
 	import flash.display.FrameLabel;
 	import flash.display.MovieClip;
-	import flash.display.StageQuality;
 	import flash.events.Event;
 	
-	import org.osflash.signals.Signal;
-	import harayoki.app.data.LetterData;
 	import harayoki.app.data.FontData;
+	import harayoki.app.data.LetterData;
+	
+	import org.osflash.signals.Signal;
 
 	public class FontSwfParser
 	{
-		
-		private static const BORDER_CLIP_NAME:String = "border";
 		
 		private var _swf:MovieClip;
 		private var _parseStep:int;
@@ -161,25 +157,15 @@ package harayoki.app.bitmapfont
 			var i:int = 0;
 			for(i=0;i<charCodes.length;i++)
 			{
-				mc.gotoAndStop(i+1);
-				var border:DisplayObject = mc.getChildByName(BORDER_CLIP_NAME);
 				var charCode:int = charCodes[i];
 				var letterData:LetterData = new LetterData();
+				letterData.applySourceClip(mc,i+1);
+				letterData.draw(1.0);
 				letterData.id = charCode;
 				letterData.x = 0;
 				letterData.y = 0;
 				letterData.offsetX = 0;//TODO borderを消して計算できる
 				letterData.offsetY = 0;
-				letterData.width = border ? border.width : mc.width;
-				letterData.height = border ? border.height : mc.height;
-				letterData.advanceX = letterData.width;
-				if(border)
-				{
-					border.visible = false;
-				}
-				var bmd:BitmapData = new BitmapData(letterData.width,letterData.height,true,0);
-				bmd.drawWithQuality(mc,null,null,null,null,true,StageQuality.BEST);
-				letterData.bitmapData = bmd;
 				_fontData.letters.push(letterData);
 			}
 			return false;

@@ -16,10 +16,10 @@ package harayoki.app.bitmapfont.pack
 			_algorithm = new SimplePackingAlgorithm();
 		}
 		
-		public function execute(fontData:FontData):BitmapData
+		public function execute(fontData:FontData,scale:Number=1.0):BitmapData
 		{
 			var bitmapData:BitmapData = new BitmapData(imageWidth,imageHeight,true,0);
-			_algorithm.execute(fontData.letters,bitmapData,fontData.lineHeight);
+			_algorithm.execute(fontData.letters,bitmapData,fontData.lineHeight,scale);
 			return bitmapData;
 		}
 		

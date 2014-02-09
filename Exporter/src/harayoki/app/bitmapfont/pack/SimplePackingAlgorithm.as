@@ -14,7 +14,7 @@ package harayoki.app.bitmapfont.pack
 		{
 		}
 		
-		public function execute(letters:Vector.<LetterData>, bitmapData:BitmapData, lineHeight:int):void
+		public function execute(letters:Vector.<LetterData>, bitmapData:BitmapData, lineHeight:int,scale:Number=1.0):void
 		{
 			var _x:int = 0;
 			var _y:int = 0;
@@ -22,6 +22,7 @@ package harayoki.app.bitmapfont.pack
 			for(i=0;i<letters.length;i++)
 			{
 				var letter:LetterData = letters[i];
+				letter.draw(scale);
 				MATRIX.identity();
 				if(_x + letter.width > bitmapData.width)
 				{
