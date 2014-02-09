@@ -95,12 +95,14 @@ package harayoki.app.bitmapfont
 		{
 			var uiEnabled:Boolean = false;
 			var acceptDragDrop:Boolean = false;
+			var cleanPreview:Boolean;
 			_panel.dropTaeget.visible = false;
  
 			switch(_state.value)
 			{
 				case AppState.WAIT_FILE:
 				{
+					cleanPreview = true;
 					acceptDragDrop = true;
 					break;
 				}
@@ -130,6 +132,10 @@ package harayoki.app.bitmapfont
 			_panel.messages.gotoAndStop(_state.value+1);
 			_ddd.enabled = acceptDragDrop;
 			_panel.dropTaeget.visible = acceptDragDrop;
+			if(cleanPreview)
+			{
+				_cleanPreview();
+			}
 		}
 		
 		private function _setUiEnabled(enabled:Boolean):void
@@ -252,12 +258,17 @@ package harayoki.app.bitmapfont
 			return _n & _n - 1?1 << _n.toString(2).length:_n;
 		}
 		
-		private function _showPreview():void
+		private function _cleanPreview():void
 		{
 			if(_preview.bitmapData)
 			{
 				_preview.bitmapData.dispose();
 			}
+		}
+		
+		private function _showPreview():void
+		{
+			_cleanPreview();
 			var w:int = parseInt(_panel.uiImageWidth.selectedLabel,10)
 			var h:int = parseInt(_panel.uiImageHeight.selectedLabel,10);
 			var scale:Number = _panel.uiScale.value;
