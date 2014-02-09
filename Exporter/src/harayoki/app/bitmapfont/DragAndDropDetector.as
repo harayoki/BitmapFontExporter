@@ -51,6 +51,11 @@ package harayoki.app.bitmapfont
 			_cleanTarget();
 			_target = null;
 			_dropFiles = null;
+			if(onDrop)
+			{
+				onDrop.removeAll();
+			}
+			onDrop = null;
 		}
 		
 		public function setTarget(target:InteractiveObject):void
