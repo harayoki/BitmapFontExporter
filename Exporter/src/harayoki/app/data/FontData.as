@@ -1,5 +1,6 @@
-package harayoki.app.bitmapfont
+package harayoki.app.data
 {
+
 	public class FontData
 	{
 		

@@ -8,6 +8,8 @@ package harayoki.app.bitmapfont
 	import flash.events.Event;
 	
 	import org.osflash.signals.Signal;
+	import harayoki.app.data.LetterData;
+	import harayoki.app.data.FontData;
 
 	public class FontSwfParser
 	{

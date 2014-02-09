@@ -1,4 +1,4 @@
-package harayoki.app.bitmapfont
+package harayoki.app.data
 {
 	import flash.display.BitmapData;
 

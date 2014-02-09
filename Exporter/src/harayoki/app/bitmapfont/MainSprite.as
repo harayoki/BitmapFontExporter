@@ -2,9 +2,11 @@ package harayoki.app.bitmapfont
 {
 	import flash.desktop.NativeApplication;
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.display.NativeWindow;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -15,6 +17,9 @@ package harayoki.app.bitmapfont
 	import flash.utils.setTimeout;
 	
 	import harayoki.app.SimpleState;
+	import harayoki.app.bitmapfont.pack.LetterPacker;
+	import harayoki.app.data.FontData;
+	import harayoki.app.data.LetterData;
 
 	public class MainSprite extends Sprite
 	{
@@ -25,6 +30,9 @@ package harayoki.app.bitmapfont
 		private var _ddd:DragAndDropDetector;
 		private var _swffile:File;
 		private var _fontSwfParser:FontSwfParser;
+		private var _letterPacker:LetterPacker;		
+		private var _preview:Bitmap;
+		private var _previewBg:Shape;
 		
 		public function MainSprite()
 		{
@@ -53,6 +61,10 @@ package harayoki.app.bitmapfont
 			{
 				_nativeWindow.startMove();
 			});
+			_panel.btnPreview.addEventListener(MouseEvent.MOUSE_DOWN,function(ev:MouseEvent):void
+			{
+				_showPreview();
+			});
 			
 			_panel.messages.mouseEnabled = false;
 			_panel.messages.mouseChildren = false;
@@ -60,13 +72,16 @@ package harayoki.app.bitmapfont
 			
 			_panel.uiFontHeight.value = 12;
 			
-			_panel.uiImageWidth.selectedIndex = 2;//256
-			_panel.uiImageHeight.selectedIndex = 2;//256
-			
 			_ddd = new DragAndDropDetector(_panel.dropTaeget);
 			_ddd.onDrop.add(_onDropSwf);
 			
 			_fontSwfParser = new FontSwfParser();
+			_letterPacker = new LetterPacker();
+			
+			_previewBg = new Shape();
+			_preview = new Bitmap();
+			_panel.preview.addChild(_previewBg);
+			_panel.preview.addChild(_preview);
 			
 			_state = new SimpleState();
 			_state.onUpdate.add(_update);
@@ -132,7 +147,6 @@ package harayoki.app.bitmapfont
 		private function _onDropSwf():void
 		{
 			_swffile = _ddd.getLastDropFiles()[0];
-			_updateUiValues();
 			_loadSwf();
 		}
 		
@@ -171,8 +185,14 @@ package harayoki.app.bitmapfont
 					
 					if(_fontSwfParser.isValid)
 					{
-						_state.value = AppState.EDIT;
-						//_debugDrawFontData(_fontSwfParser.getFontData());
+						_updateUiValues();
+						//念のため負荷分散
+						flash.utils.setTimeout(function():void{
+							_showPreview();
+						},1);
+						flash.utils.setTimeout(function():void{
+							_state.value = AppState.EDIT;
+						},2);
 					}
 					else
 					{
@@ -205,11 +225,60 @@ package harayoki.app.bitmapfont
 			arr.pop();
 			var name:String = arr.join(".");
 			
+			var fontData:FontData = _fontSwfParser.getFontData();
+			
+			_panel.uiImageWidth.selectedIndex = 2;//256
+			_panel.uiImageHeight.selectedIndex = 2;//256
+			
 			_panel.uiFntFileName.text = name+".fnt";
 			_panel.uiFontName.text = name;
 			_panel.uiImageFileName.text = name+".png";
+			
+			var h:int = 0;
+			var i:int = 0;
+			for(i=0;i<fontData.letters.length;i++)
+			{
+				h = Math.max(fontData.letters[i].height);
+			}
+			
+			_panel.uiFontHeight.value = h;
 		}
 
+		private function getNearest2N(_n:uint):uint
+		{
+			return _n & _n - 1?1 << _n.toString(2).length:_n;
+		}
+		
+		private function _showPreview():void
+		{
+			if(_preview.bitmapData)
+			{
+				_preview.bitmapData.dispose();
+			}
+			var w:int = parseInt(_panel.uiImageWidth.selectedLabel,10)
+			var h:int = parseInt(_panel.uiImageHeight.selectedLabel,10);
+			_letterPacker.imageWidth = w;;
+			_letterPacker.imageHeight = h;
+			var fontData:FontData = _fontSwfParser.getFontData();
+			fontData.lineHeight = _panel.uiFontHeight.value;
+			var bmd:BitmapData = _letterPacker.execute(fontData);
+			_preview.bitmapData = bmd;
+			var scale:Number = Math.min(256/w,256/h);
+			scale = Math.min(scale,1.0);
+			_preview.scaleX = _preview.scaleY = scale;
+			_previewBg.scaleX = _previewBg.scaleY = scale;
+			
+			_previewBg.graphics.clear();
+			_previewBg.graphics.lineStyle(0,0,0.5);
+			_previewBg.graphics.drawRect(0,0,w,h);
+			_previewBg.graphics.lineStyle(0,0,0.25);
+			for(var i:int=0;i<fontData.letters.length;i++)
+			{
+				var letter:LetterData = fontData.letters[i];
+				_previewBg.graphics.drawRect(letter.x,letter.y,letter.width,letter.height);
+			}
+		}
+		
 		private function _debugDrawFontData(fontData:FontData):void
 		{
 			trace("fontData :",fontData);
