@@ -8,7 +8,9 @@ package
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.text.TextField;
 	import starling.utils.AssetManager;
+	import starling.utils.HAlign;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
 	
@@ -20,6 +22,9 @@ package
 		private static var _flashStage:Stage;
 		
 		private var _assetManager:AssetManager;
+		private var _textField:TextField;
+		private var _num:int = 0;
+		
 
 		public static function main(stage:Stage):void
 		{
@@ -67,7 +72,8 @@ package
 		{
 			_assetManager = new AssetManager();
 			_assetManager.verbose = true;
-			_assetManager.enqueue("assets/dummy.txt");
+			_assetManager.enqueue("sampleFont.png");
+			_assetManager.enqueue("sampleFont.fnt");
 			_assetManager.loadQueue(function(num:Number):void{
 				if(num==1.0)
 				{
@@ -78,11 +84,57 @@ package
 		
 		private function _handleEnterFrame(ev:Event):void
 		{
+			if(_textField)
+			{
+				_num += 3;
+				var str:String = _addComma(("0000000"+_num).slice(-8));
+				_textField.text = str;
+				
+				if(_num>99999999)
+				{
+					_num = 0;
+				}
+			}
+		}
+		
+		private function _addComma(str:String):String
+		{
+			var arr:Array = [];
+			var res:String = "";
+			var i:int = str.length;
+			while(i--)
+			{
+				res = str.charAt(i) + res;
+				if(res.length==3)
+				{
+					arr.unshift(res);
+					res = "";
+				}
+			}
+			if(res.length>0)
+			{
+				arr.unshift(res);
+			}
+			return arr.join(",");
 		}
 		
 		private function _start():void
 		{
 			stage.addEventListener(Event.ENTER_FRAME,_handleEnterFrame);
+			
+			
+			//textField = new TextField(500, 60, "9,876,543,210\n123456789","_sans", 60, 0xffffff);
+			//textField.x = 50;
+			//textField.y = 50;
+			//textField.hAlign = HAlign.LEFT;
+			//addChild(textField);
+			
+			_textField = new TextField(640-20, 120, "","sampleFont", 60, 0xffffff);
+			_textField.x = 10;
+			_textField.y = 150;
+			_textField.hAlign = HAlign.CENTER;
+			addChild(_textField);
+			
 		}
 	}
 }

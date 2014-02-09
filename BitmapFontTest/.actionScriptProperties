@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="DesktopMain.as" projectUUID="7a914026-dc53-4beb-a01d-74d81fbc8803" version="11">
+<actionScriptProperties analytics="false" mainApplicationPath="BitmapFontTest.as" projectUUID="7a914026-dc53-4beb-a01d-74d81fbc8803" version="11">
   <compiler additionalCompilerArguments="-locale en_US" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
-    <compilerSourcePath/>
+    <compilerSourcePath>
+      <compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/sample"/>
+    </compilerSourcePath>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
         <excludedEntries>
@@ -35,6 +37,9 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="BitmapFontTest.as">
+      <airExcludes/>
+    </application>
     <application path="DesktopMain.as">
       <airExcludes/>
     </application>
