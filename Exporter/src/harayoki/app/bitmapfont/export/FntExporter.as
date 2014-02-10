@@ -6,6 +6,7 @@ package harayoki.app.bitmapfont.export
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.net.SharedObject;
 	import flash.utils.ByteArray;
 	import flash.utils.setTimeout;
 	
@@ -15,6 +16,8 @@ package harayoki.app.bitmapfont.export
 
 	public class FntExporter
 	{
+		private static const SO_KEY:String = "BitmapFOntExporter";
+		private static const LAST_SAVED:String = "lastsaved";
 		
 		private var _onResult:Signal = new Signal();
 		private var _errorMessage:String;
@@ -47,7 +50,22 @@ package harayoki.app.bitmapfont.export
 			_errorMessage = "";
 			_isSuccess = false;
 			
-			var file:File = File.desktopDirectory;
+			var file:File;
+			var so:SharedObject = SharedObject.getLocal(SO_KEY);
+			var path:String = so.data[LAST_SAVED];
+			if(path)
+			{
+				file = new File(path);
+				if(!file.exists)
+				{
+					file = File.userDirectory;
+				}
+			}
+			else
+			{
+				file = File.userDirectory;
+			}
+			
 			file.browseForDirectory("select save dirctory");
 			file.addEventListener(Event.SELECT,onSelectDir);
 			file.addEventListener(Event.CANCEL,onCancelSelectDir);
@@ -133,6 +151,8 @@ package harayoki.app.bitmapfont.export
 			
 			function finish():void
 			{
+				so.data[LAST_SAVED] = file.nativePath;
+				trace(file.nativePath);
 				_isSuccess = true;
 				_onResult.dispatch();
 			}
