@@ -16,7 +16,7 @@ package harayoki.app.bitmapfont.export
 
 	public class FntExporter
 	{
-		private static const SO_KEY:String = "BitmapFOntExporter";
+		private static const SO_KEY:String = "BitmapFontExporter";
 		private static const LAST_SAVED:String = "lastsaved";
 		
 		private var _onResult:Signal = new Signal();
