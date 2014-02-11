@@ -83,7 +83,7 @@ http://harayoki.github.io/BitmapFontExporter/html/WebSample.html
 ![ツール画面](https://raw2.github.com/harayoki/BitmapFontExporter/master/html/cap1.png)
 
 * ツールを立ち上げあげ、作成したswfをドロップします。
-* ツール上でフォントの立て幅、倍率、書き出しフォーマット等を指定します。
+* ツール上でフォントの縦幅、倍率、書き出しフォーマット等を指定します。
 * 同様に書き出し画像サイズを調整します。(現在自動で調整されません。)プレビューボタンを押して画像の治まり具合を確認します。
 * エクスポートボタンを押して、データを書き出すフォルダを指定します。
 
