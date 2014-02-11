@@ -17,7 +17,7 @@ package
 	public class MainSprite extends Sprite
 	{
 		private static const CONTENTS_WIDTH:int = 640;
-		private static const CONTENTS_HEIGHT:int = 960;
+		private static const CONTENTS_HEIGHT:int = 480;
 		private static var _starling:Starling;
 		private static var _flashStage:Stage;
 		
