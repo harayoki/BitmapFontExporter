@@ -9,7 +9,7 @@ https://github.com/harayoki/BitmapFontExporter/raw/master/Exporter.air
 
 デモ
 
-https://github.com/harayoki/BitmapFontExporter/raw/master/html/WebSample.html
+http://harayoki.github.io/BitmapFontExporter/html/WebSample.html
 
 ![ツール画面](https://raw2.github.com/harayoki/BitmapFontExporter/master/html/cap1.png)
 
