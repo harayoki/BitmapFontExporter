@@ -19,6 +19,8 @@ BitmapFontExporterは機能的にはそれらのツールにだいぶ劣りま�
 ツール ダウンロード
 ==================
 
+以下(このリポジトリ内です)から入手できます。
+
 https://github.com/harayoki/BitmapFontExporter/raw/master/Exporter.air
 
 
@@ -33,10 +35,12 @@ https://github.com/harayoki/BitmapFontExporter/raw/master/Exporter.air
 * png書き出し簡易プレビュー
 
 ![フォント適用例](https://raw2.github.com/harayoki/BitmapFontExporter/master/html/cap3.png)
-デザインされた文字の大きさがそれぞれ異なり、文字通しを若干重ねての表示できている
+
+多色でデザインされた文字は、幅がそれぞれ調整され(等幅フォントではない)、文字同士は若干重ねて表示させられています。
+
+<実際の動作デモ>
 
 http://harayoki.github.io/BitmapFontExporter/html/WebSample.html
-
 
 できない事
 =========
@@ -46,7 +50,7 @@ http://harayoki.github.io/BitmapFontExporter/html/WebSample.html
 * 書き出しpngサイズ自動計算
 * フォント画像の賢いパッキング
 
-* 書き出したデータはまだFlash以外での環境で動作検証されていません。
+※書き出したデータはまだFlash以外での環境で動作検証されていません。
 
 今後対応？
 =========
@@ -84,5 +88,7 @@ http://harayoki.github.io/BitmapFontExporter/html/WebSample.html
 * エクスポートボタンを押して、データを書き出すフォルダを指定します。
 
 以上の作業で、fntファイルとpng画像を得る事ができます。
+
+Enjoy!
 
 
