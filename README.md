@@ -3,7 +3,13 @@ BitmapFontExporter
 
 AIR app : creates bitmap font files from swf file.
 
+ダウンロード
+
 https://github.com/harayoki/BitmapFontExporter/raw/master/Exporter.air
+
+デモ
+
+https://github.com/harayoki/BitmapFontExporter/raw/master/html/WebSample.html
 
 ![ツール画面](https://raw2.github.com/harayoki/BitmapFontExporter/master/html/cap1.png)
 

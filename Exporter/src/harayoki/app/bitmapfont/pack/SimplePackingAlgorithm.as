@@ -19,15 +19,18 @@ package harayoki.app.bitmapfont.pack
 			var _x:int = 0;
 			var _y:int = 0;
 			var i:int=0;
+			var maxHeight:int = 0;
 			for(i=0;i<letters.length;i++)
 			{
 				var letter:LetterData = letters[i];
 				letter.draw(scale);
 				MATRIX.identity();
+				maxHeight = Math.max(maxHeight,letter.height);
 				if(_x + letter.width > bitmapData.width)
 				{
 					_x = 0;
-					_y += lineHeight;
+					_y += maxHeight;
+					maxHeight = 0;
 				}
 				MATRIX.translate(_x,_y);
 				

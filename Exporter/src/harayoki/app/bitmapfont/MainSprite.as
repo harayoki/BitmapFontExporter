@@ -257,7 +257,7 @@ package harayoki.app.bitmapfont
 			var i:int = 0;
 			for(i=0;i<fontData.letters.length;i++)
 			{
-				h = Math.max(fontData.letters[i].height);
+				h = Math.max(fontData.letters[i]._bottom);
 			}
 			
 			_panel.uiFontHeight.value = h;

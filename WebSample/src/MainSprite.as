@@ -121,15 +121,8 @@ package
 		private function _start():void
 		{
 			stage.addEventListener(Event.ENTER_FRAME,_handleEnterFrame);
-			
-			
-			//textField = new TextField(500, 60, "9,876,543,210\n123456789","_sans", 60, 0xffffff);
-			//textField.x = 50;
-			//textField.y = 50;
-			//textField.hAlign = HAlign.LEFT;
-			//addChild(textField);
-			
-			_textField = new TextField(640-20, 120, "","sampleFont", 60, 0xffffff);
+						
+			_textField = new TextField(640-20, 120, "","sampleFont", 90, 0xffffff);
 			_textField.x = 10;
 			_textField.y = 150;
 			_textField.hAlign = HAlign.CENTER;
