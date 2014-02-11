@@ -160,7 +160,7 @@ package harayoki.app.bitmapfont
 				var charCode:int = charCodes[i];
 				var letterData:LetterData = new LetterData();
 				letterData.applySourceClip(mc,i+1);
-				letterData.draw(1.0);
+				LetterData.updateLetterData(letterData,1.0);//本来ここでは必要ないが、デフォルトのlineHeightの計算のため、いったん等倍で画像データを作る
 				letterData.id = charCode;
 				letterData.x = 0;
 				letterData.y = 0;

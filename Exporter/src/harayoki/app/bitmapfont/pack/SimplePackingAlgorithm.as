@@ -23,7 +23,7 @@ package harayoki.app.bitmapfont.pack
 			for(i=0;i<letters.length;i++)
 			{
 				var letter:LetterData = letters[i];
-				letter.draw(scale);
+				LetterData.updateLetterData(letter,scale);
 				MATRIX.identity();
 				maxHeight = Math.max(maxHeight,letter.height);
 				if(_x + letter.width > bitmapData.width)
