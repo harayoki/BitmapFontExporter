@@ -2,7 +2,7 @@ BitmapFontExporter
 ==================
 
 Flashのタイムライン上にならべた自由なデザインの文字をビットマップフォントに変換するツールです。
-書き出したデータは、cocos2D系、Unity(NGUI)、Flash/AIR(Starlng)など
+書き出したデータはGlyph Designer互換なので、cocos2D系、Unity(NGUI)、Flash/AIR(Starlng)など
 さまざまなゲームライブラリ/フレームワークから利用する事ができます。
 
 世にあるビットマップフォント書き出しツールのGlyph Designerや、BMFontなどはフォントファイルを読み込んで、
