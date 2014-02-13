@@ -22,10 +22,12 @@ package harayoki.app.data
 				//原点置きに強制
 				if(border.x!=0 || border.y != 0)
 				{
-					border.width = border.x + border.width;
-					border.height = border.y + border.height;
-					border.x = 0;
-					border.y = 0;
+					trace("caution border mocie clip is not located at 0,0 !");
+					//ここでサイズを変えると全フレームのborderの大きさがそろってしまう
+					//border.width = border.x + border.width;
+					//border.height = border.y + border.height;
+					//border.x = 0;
+					//border.y = 0;
 				}
 			}
 			if(clip)
